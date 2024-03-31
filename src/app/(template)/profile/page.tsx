@@ -1,7 +1,7 @@
 import { type Metadata } from 'next'
 import Image from 'next/image'
 import { redirect } from 'next/navigation'
-import { getUserSessionServer } from '@/auth'
+import { getUserSessionServer } from '@/actions'
 import { LogoutButton } from '@/components'
 
 export const metadata: Metadata = {

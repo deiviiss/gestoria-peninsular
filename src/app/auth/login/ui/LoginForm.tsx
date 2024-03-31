@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
-import { authenticate } from '@/auth'
+import { authenticate } from '@/actions'
 
 export const LoginForm = () => {
   const router = useRouter()
@@ -50,9 +50,9 @@ export const LoginForm = () => {
 
       {/* divisor l ine */}
       <div className="flex items-center my-5">
-        <div className="flex-1 border-t border-gray-500"></div>
-        <div className="px-2 text-gray-800">O</div>
-        <div className="flex-1 border-t border-gray-500"></div>
+        <div className="flex-1 border-t border-gray-300"></div>
+        <div className="px-2 text-gray-100">O</div>
+        <div className="flex-1 border-t border-gray-300"></div>
       </div>
 
       <Link href="/auth/new-account" className="btn-secondary text-center">
@@ -68,10 +68,7 @@ function LoginButton() {
   return (
     <button
       type="submit"
-      // className={clsx({
-      //   'btn-primary': !pending,
-      //   'btn-disabled': pending
-      // })}
+      className='btn-primary'
       disabled={pending}
     >
       Ingresar

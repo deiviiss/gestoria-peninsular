@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
-import { getUserSessionServer } from '@/auth'
+import { getUserSessionServer } from '@/actions'
+import { Title, UsersGrid } from '@/components'
 import prisma from '@/libs/prisma'
-import { UsersGrid } from '@/users'
 
 export const metadata: Metadata = {
   title: 'Pagina de usuarios',
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default async function UsersPage() {
   const user = await getUserSessionServer()
-  const isAdmin = user?.roles.includes('admin')
+  const isAdmin = user?.role.includes('admin')
 
   if (!user) redirect('/auth/login')
   if (!isAdmin) redirect('/')
@@ -20,6 +20,7 @@ export default async function UsersPage() {
 
   return (
     <div>
+      <Title title='Página de Usuarios' subtitle='Muestra todos los usuarios' />
       <UsersGrid users={users} />
     </div>
   )

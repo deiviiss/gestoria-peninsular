@@ -25,7 +25,7 @@ model User {
   password      String?
   emailVerified DateTime?
   image         String?
-  roles         Role      @default(user)
+  role          Role      @default(user)
   isActive      Boolean   @default(true)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime?

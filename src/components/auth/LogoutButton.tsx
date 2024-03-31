@@ -1,7 +1,7 @@
 'use client'
 
 import { useSession } from 'next-auth/react'
-import { logout } from '@/auth'
+import { logout } from '@/actions'
 
 export const LogoutButton = () => {
   const { status } = useSession()

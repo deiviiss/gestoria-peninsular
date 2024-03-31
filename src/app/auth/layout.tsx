@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
-import { getUserSessionServer } from '@/auth'
+import { getUserSessionServer } from '@/actions'
 
 export default async function AuthLayout({
   children

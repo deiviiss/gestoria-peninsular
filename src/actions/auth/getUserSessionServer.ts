@@ -1,3 +1,5 @@
+'use server'
+
 import { auth } from '@/auth.config'
 
 export const getUserSessionServer = async () => {
