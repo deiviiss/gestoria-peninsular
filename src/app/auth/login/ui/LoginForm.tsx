@@ -1,18 +1,16 @@
 'use client'
 
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { useFormState, useFormStatus } from 'react-dom'
 import { authenticate } from '@/actions'
 
 export const LoginForm = () => {
-  const router = useRouter()
   const [state, dispatch] = useFormState(authenticate, undefined)
 
   useEffect(() => {
     if (state === 'SuccessSignin') {
-      router.push('/profile')
+      window.location.replace('/dashboard/profile')
     }
   }, [state])
 
@@ -20,14 +18,14 @@ export const LoginForm = () => {
     <form action={dispatch} className="flex flex-col gap-3">
       <label htmlFor="email">Correo electrónico</label>
       <input
-        className="px-5 py-2 border bg-gray-200 rounded mb-5"
+        className='w-full bg-gray-200 rounded px-5 py-2 mb-5 border-b-2 border-gray-300 text-primary focus:outline-none focus:border-blue-900 focus:border-b-2'
         type="email"
         name="email"
       />
 
       <label htmlFor="password">Contraseña</label>
       <input
-        className="px-5 py-2 border bg-gray-200 rounded mb-5"
+        className='w-full bg-gray-200 rounded px-5 py-2 mb-5 border-b-2 border-gray-300 text-primary focus:outline-none focus:border-blue-900 focus:border-b-2'
         type="password"
         name="password"
       />
@@ -50,9 +48,9 @@ export const LoginForm = () => {
 
       {/* divisor l ine */}
       <div className="flex items-center my-5">
-        <div className="flex-1 border-t border-gray-300"></div>
-        <div className="px-2 text-gray-100">O</div>
-        <div className="flex-1 border-t border-gray-300"></div>
+        <div className="flex-1 border-t border-primary"></div>
+        <div className="px-2 text-primary">O</div>
+        <div className="flex-1 border-t border-primary"></div>
       </div>
 
       <Link href="/auth/new-account" className="btn-secondary text-center">

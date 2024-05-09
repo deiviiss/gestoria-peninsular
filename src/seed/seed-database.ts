@@ -3,7 +3,7 @@ import prisma from '../libs/prisma'
 
 const main = async () => {
   // delete all data
-  await prisma.user.deleteMany()
+  // await prisma.user.deleteMany()
 
   // seed users
   const { users } = initialData

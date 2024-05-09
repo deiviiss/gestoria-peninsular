@@ -1,34 +1,422 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  admin
-  user
-}
-
 model User {
-  id            String    @id @default(uuid())
-  email         String    @unique
-  name          String
-  password      String?
-  emailVerified DateTime?
-  image         String?
-  role          Role      @default(user)
-  isActive      Boolean   @default(true)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime?
+  user_id   Int     @id @default(autoincrement())
+  username  String
+  password  String
+  fullname  String
+  zona      String
+  puesto    String
+  email     String  @unique
+  movil     String
+  oficina   String
+  direccion String
+  permiso   String? @db.VarChar(45)
+  region    Int?
+  role      String  @default("asesor")
 
   @@map("users")
+}
+
+model Activation {
+  id                    Int       @id @default(autoincrement())
+  nombre                String    @db.VarChar(255)
+  apellidoPaterno       String    @db.VarChar(255)
+  apellidoMaterno       String    @db.VarChar(255)
+  curp                  String    @db.VarChar(18)
+  nss                   String    @db.VarChar(11)
+  rfc                   String    @default("sin - asignar") @db.VarChar(13)
+  email                 String    @default("sin-asignar@mail.com") @db.VarChar(255)
+  telefono              String    @db.VarChar(10)
+  scotizadas            Int
+  sdescontadas          Int
+  observaciones         String?   @db.Text
+  direccion             String    @db.VarChar(150)
+  entidad               String    @db.VarChar(60)
+  estado                String    @db.VarChar(60)
+  editado               String    @db.VarChar(255)
+  infonavit             Int       @db.TinyInt
+  nombre_referencia     String    @db.VarChar(45)
+  apellido_referencia   String    @db.VarChar(45)
+  parentesco_referencia String    @db.VarChar(45)
+  telefono_referencia   String    @db.VarChar(10)
+  created_at            DateTime  @default(now())
+  update_at             DateTime?
+  tipo_tramite          String    @default("activate") @db.VarChar(8)
+  fecha_alta            DateTime? @db.Date
+  salario               Decimal
+
+  afore_id  Int
+  afore     Afore  @relation(fields: [afore_id], references: [afore_id], onDelete: NoAction, onUpdate: NoAction)
+  asesor_id Int
+  asesor    Asesor @relation(fields: [asesor_id], references: [asesor_id], onDelete: NoAction, onUpdate: NoAction)
+  zona_id   Int
+  zona      Zona   @relation(fields: [zona_id], references: [zona_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([afore_id], map: "Activate_afore_id_fkey")
+  @@index([asesor_id], map: "Activate_asesor_id_fkey")
+  @@index([zona_id], map: "Activate_zona_id_fkey")
+  @@map("activations")
+}
+
+model Afore {
+  afore_id    Int          @id @unique(map: "afore_id_UNIQUE") @default(autoincrement())
+  afore       String       @db.VarChar(45)
+  activations Activation[]
+  preAltas    PreAlta[]
+  customers   Customer[]
+
+  @@map("afores")
+}
+
+model Asesor {
+  asesor_id        Int              @id @unique(map: "asesor_id_UNIQUE") @default(autoincrement())
+  asesor           String           @unique(map: "asesor_UNIQUE") @db.VarChar(100)
+  apellido_materno String?          @db.VarChar(45)
+  curp             String?          @db.VarChar(18)
+  nss              String?          @db.VarChar(11)
+  rfc              String?          @db.VarChar(13)
+  telefono         String?          @db.VarChar(10)
+  direccion        String?          @db.VarChar(255)
+  status           String?          @default("Activo") @db.VarChar(45)
+  testigo1         String?          @db.VarChar(100)
+  testigo2         String?          @db.VarChar(100)
+  estado           String?          @db.VarChar(60)
+  entidad          String?          @db.VarChar(60)
+  create_at        DateTime?        @db.Date
+  update_at        DateTime?        @db.Date
+  activations      Activation[]
+  preAltas         PreAlta[]
+  relacionAsesores RelacionAsesor[]
+  customers        Customer[]
+
+  @@map("asesores")
+}
+
+model Customer {
+  cliente_id          Int       @id @unique(map: "cliente_id_UNIQUE") @default(autoincrement())
+  cliente             String?   @db.VarChar(255)
+  curp                String?   @db.VarChar(18)
+  nss                 String?   @db.VarChar(11)
+  monto               Decimal?
+  fecha_tramite       DateTime? @db.Date
+  fecha_baja          DateTime? @db.Date
+  fecha_ultima_baja   DateTime? @db.Date
+  fecha_ultimo_retiro DateTime? @db.Date
+  scotizadas          Int
+  sdescontadas        Int
+  direccion           String?   @db.VarChar(255)
+  telefono            String?   @db.VarChar(11)
+  observaciones       String?   @db.Text
+  status              String?   @default("Modificando") @db.VarChar(60)
+  motivo              String?   @db.VarChar(60)
+  tipo_tramite        String?   @default("Desempleo") @db.VarChar(45)
+  referencia          String?   @db.VarChar(255)
+  editado             String?   @db.VarChar(60)
+  infonavit           Int?      @db.TinyInt
+  region              Int?
+
+  //! Establecer relacion revision rompe
+  revision Int? @default(5)
+
+  update_at   DateTime? @db.Date
+  solution_at DateTime? @db.Date
+  create_at   DateTime? @db.Date
+  email       String    @default("sin-asignar@mail.com") @db.VarChar(255)
+  rfc         String    @default("sin - asignar") @db.VarChar(13)
+  entidad     String    @default("sin - asignar") @db.VarChar(60)
+
+  llamada_id      Int?           @default(1)
+  llamada         Llamada?       @relation(fields: [llamada_id], references: [llamada_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_clientes_llamadas")
+  asesor_id       Int
+  asesor          Asesor         @relation(fields: [asesor_id], references: [asesor_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_clientes_asesores")
+  afore_id        Int
+  afore           Afore          @relation(fields: [afore_id], references: [afore_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_clientes_afores")
+  zona_id         Int
+  zona            Zona           @relation(fields: [zona_id], references: [zona_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_clientes_zonas")
+  outsourcing_id  Int            @default(6)
+  outsourcing     Outsourcing    @relation(fields: [outsourcing_id], references: [id], map: "fk_clientes_outsourcings")
+  receiptIncomeId Int?
+  receiptIncome   ReceiptIncome? @relation(fields: [receiptIncomeId], references: [id])
+  liquidacion     Liquidacion?
+
+  @@index([afore_id], map: "fk_clientes_afores_idx")
+  @@index([asesor_id], map: "fk_clientes_asesores_idx")
+  @@index([llamada_id], map: "fk_clientes_llamadas_idx")
+  @@index([outsourcing_id], map: "fk_clientes_outsourcings_idx")
+  @@index([zona_id], map: "fk_clientes_zonas_idx")
+  @@index([receiptIncomeId], map: "clientes_receiptIncomeId_fkey")
+  @@map("clientes")
+}
+
+model Confidencial {
+  confidencial_id   Int      @id @unique(map: "confidencial_id_UNIQUE") @default(autoincrement())
+  trabajador        String   @db.VarChar(255)
+  curp              String   @unique(map: "curp_UNIQUE") @db.VarChar(18)
+  nss               String   @unique(map: "nss_UNIQUE") @db.VarChar(11)
+  rfc               String   @unique(map: "rfc_UNIQUE") @db.VarChar(13)
+  ine               String   @db.VarChar(45)
+  estado_civil      String   @db.VarChar(45)
+  telefono          String   @db.VarChar(10)
+  sexo              String   @db.VarChar(60)
+  pena_convencional Decimal
+  direccion         String   @db.VarChar(255)
+  ciudad            String   @db.VarChar(45)
+  estado            String   @db.VarChar(90)
+  create_at         DateTime @db.DateTime(0)
+
+  @@map("confidenciales")
+}
+
+model Cuenta {
+  cuenta_id     Int           @id @default(autoincrement())
+  banco         String        @db.VarChar(60)
+  cuenta        String        @db.VarChar(60)
+  status        Int           @db.TinyInt
+  Liquidaciones Liquidacion[]
+
+  @@map("cuentas")
+}
+
+model FechaBaja {
+  fechabaja_id Int      @id @default(autoincrement())
+  fecha_baja   DateTime @db.Date
+  week         Int?
+
+  @@map("fecha_baja")
+}
+
+model FechaTramite {
+  fecha_id      Int      @id @default(autoincrement())
+  week          Int
+  fecha_tramite DateTime @db.Date
+  observaciones String?  @db.VarChar(255)
+  status        Int      @db.TinyInt
+
+  @@map("fechas")
+}
+
+model Inventario {
+  equipo_id     Int     @id @default(autoincrement())
+  nombre_equipo String  @db.VarChar(255)
+  serie         String  @default("No anotado") @db.VarChar(90)
+  cantidad      Int     @default(0)
+  status        String  @default("Ok") @db.VarChar(45)
+  observaciones String? @db.VarChar(255)
+
+  zona_id Int
+  zona    Zona @relation(fields: [zona_id], references: [zona_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_zona_inventario")
+
+  @@index([zona_id], map: "fk_zona_inventario_idx")
+  @@map("inventarios")
+}
+
+model Laboral {
+  laboral_id            Int      @id @unique(map: "laboral_id_UNIQUE") @default(autoincrement())
+  trabajador            String   @db.VarChar(255)
+  curp                  String   @unique(map: "curp_UNIQUE") @db.VarChar(18)
+  nss                   String   @unique(map: "nss_UNIQUE") @db.VarChar(11)
+  rfc                   String   @unique(map: "rfc_UNIQUE") @db.VarChar(13)
+  edad                  Int
+  estado_civil          String   @db.VarChar(45)
+  sexo                  String   @db.VarChar(60)
+  telefono              String   @db.VarChar(10)
+  puesto                String   @db.VarChar(45)
+  direccion             String   @db.VarChar(255)
+  ciudad                String   @db.VarChar(45)
+  estado                String   @db.VarChar(90)
+  beneficiario          String   @db.VarChar(90)
+  parentesco            String   @db.VarChar(45)
+  telefono_beneficiario String   @db.VarChar(10)
+  create_at             DateTime @db.DateTime(0)
+
+  @@map("laborales")
+}
+
+model Liquidacion {
+  liquidacion_id    Int       @id @default(autoincrement())
+  monto             Decimal?  @default(0.00) @db.Decimal(63, 2)
+  porcentaje        String?   @db.VarChar(60)
+  aseguramiento     Decimal?  @default(0.00) @db.Decimal(63, 2)
+  comision          Decimal?  @default(0.00) @db.Decimal(63, 2)
+  cobro_cliente     Decimal?  @default(0.00) @db.Decimal(63, 2)
+  asesor            Decimal?  @default(0.00) @db.Decimal(63, 2)
+  sucursal          Decimal?  @default(0.00) @db.Decimal(63, 2)
+  abono             Decimal?  @default(0.00) @db.Decimal(63, 2)
+  sin_abono         Decimal?  @default(0.00) @db.Decimal(63, 2)
+  penalizacion      Decimal?  @default(0.00) @db.Decimal(63, 2)
+  liquidar          Decimal?  @default(0.00) @db.Decimal(63, 2)
+  fecha_liquidacion DateTime? @db.Date
+  folio             String?   @db.VarChar(100)
+  status            String?   @default("open") @db.VarChar(45)
+  observaciones     String?   @db.VarChar(255)
+  cierre            String?   @db.VarChar(60)
+
+  cliente_id Int      @unique(map: "cliente_id_UNIQUE")
+  customer   Customer @relation(fields: [cliente_id], references: [cliente_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_liquidaciones_clientes")
+  cuenta_id  Int?
+  cuenta     Cuenta?  @relation(fields: [cuenta_id], references: [cuenta_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_liquidaciones_cuentas")
+
+  @@index([cuenta_id], map: "fk_liquidaciones_cuentas_idx")
+  @@index([cliente_id], map: "fk_tramites_idx")
+  @@map("liquidaciones")
+}
+
+model Llamada {
+  llamada_id  Int        @id @default(autoincrement())
+  status      String     @db.VarChar(45)
+  descripcion String?    @db.VarChar(90)
+  customer    Customer[]
+
+  @@map("llamadas")
+}
+
+model Message {
+  mensaje_id     Int     @id @unique(map: "idmensajes_UNIQUE") @default(autoincrement())
+  name           String  @db.VarChar(45)
+  phone          String  @db.VarChar(10)
+  email          String  @db.VarChar(60)
+  message        String  @db.Text
+  response       String? @db.Text
+  status         Int     @db.TinyInt
+  accepted_terms Int     @db.TinyInt
+
+  @@map("messages")
+}
+
+model Motivo {
+  id_motivo Int     @id @default(autoincrement()) @db.UnsignedInt
+  motivo    String? @unique(map: "motivo_UNIQUE") @db.VarChar(45)
+
+  @@map("motivos")
+}
+
+model Outsourcing {
+  id    Int     @id @unique(map: "outsourcing_id_UNIQUE") @default(autoincrement())
+  name  String  @unique(map: "outsourcing_UNIQUE") @db.VarChar(45)
+  email String? @default("example@mail.com") @db.VarChar(45)
+
+  receiptIncome ReceiptIncome[]
+  customers     Customer[]
+
+  @@map("outsourcings")
+}
+
+model PreAlta {
+  prealta_id            Int       @id @default(autoincrement())
+  nombre                String    @db.VarChar(60)
+  apellidoPaterno       String    @db.VarChar(60)
+  apellidoMaterno       String    @db.VarChar(60)
+  curp                  String    @db.VarChar(18)
+  nss                   String    @db.VarChar(11)
+  rfc                   String    @db.VarChar(13)
+  scotizadas            Int
+  sdescontadas          Int
+  fecha_ultimo_retiro   DateTime? @db.Date
+  monto                 Decimal
+  direccion             String    @db.VarChar(150)
+  entidad               String    @db.VarChar(60)
+  telefono              String    @db.VarChar(10)
+  observaciones         String?   @db.Text
+  create_at             DateTime? @default(now())
+  editado               String    @db.VarChar(255)
+  region                Int
+  infonavit             Int       @db.TinyInt
+  nombre_referencia     String    @db.VarChar(45)
+  apellido_referencia   String    @db.VarChar(45)
+  parentesco_referencia String    @db.VarChar(45)
+  telefono_referencia   String    @db.VarChar(10)
+  estado                String    @db.VarChar(60)
+  tipo_tramite          String    @db.VarChar(45)
+  fecha_ultima_baja     DateTime  @db.Date
+  email                 String    @default("sin-asignar@mail.com") @db.VarChar(255)
+
+  asesor_id Int
+  asesor    Asesor @relation(fields: [asesor_id], references: [asesor_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_asesor")
+  afore_id  Int
+  afore     Afore  @relation(fields: [afore_id], references: [afore_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_afore")
+  zona_id   Int
+  zona      Zona   @relation(fields: [zona_id], references: [zona_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_zona")
+
+  @@index([afore_id], map: "fk_afore_idx")
+  @@index([asesor_id], map: "fk_asesor_idx")
+  @@index([zona_id], map: "fk_zona_idx")
+  @@map("pre_altas")
+}
+
+model RelacionAsesor {
+  region_id Int    @id @default(autoincrement())
+  region    Int?
+  asesor_id Int
+  asesor    Asesor @relation(fields: [asesor_id], references: [asesor_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_r_asesor")
+  zona_id   Int
+  zona      Zona   @relation(fields: [zona_id], references: [zona_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_r_zona")
+
+  @@index([asesor_id], map: "fk_asesor_idx")
+  @@index([zona_id], map: "fk_zona_idx")
+  @@map("relacion_asesores")
+}
+
+model Revision {
+  revision_id Int    @id @unique @default(autoincrement())
+  tipo        Int
+  description String @db.VarChar(120)
+
+  @@map("revisiones")
+}
+
+model Session {
+  session_id String  @id @db.VarChar(128)
+  expires    Int     @db.UnsignedInt
+  data       String? @db.MediumText
+
+  @@map("sessions")
+}
+
+model State {
+  id_status Int    @id @default(autoincrement()) @db.UnsignedInt
+  status    String @unique(map: "status_UNIQUE") @db.VarChar(45)
+
+  //! shoub be have a relation with the table cliente
+
+  @@map("status")
+}
+
+model Zona {
+  zona_id     Int    @id @unique(map: "zona_id_UNIQUE") @default(autoincrement())
+  zona        String @unique(map: "zona_UNIQUE") @db.VarChar(60)
+  region      Int
+  status      String @db.VarChar(45)
+  liquidacion String @db.VarChar(45)
+  direccion   String @db.VarChar(160)
+
+  activations      Activation[]
+  inventarios      Inventario[]
+  preAltas         PreAlta[]
+  relacionAsesores RelacionAsesor[]
+  customers        Customer[]
+
+  @@map("zonas")
+}
+
+model ReceiptIncome {
+  id     Int       @id @default(autoincrement())
+  week   Int
+  total  Int
+  cost   Int
+  isPaid Boolean   @default(false)
+  atPaid DateTime?
+
+  customers      Customer[]
+  outsourcing_id Int         @default(7)
+  outsourcing    Outsourcing @relation(fields: [outsourcing_id], references: [id])
+
+  @@map("receiptIncomes")
 }

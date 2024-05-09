@@ -16,12 +16,12 @@ export const Sidebar = () => {
   const isAdmin = session?.user?.role === 'admin'
 
   return (
-    <div>
+    <>
       {
         isSideMenuOpen && (
           <>
             {/* background */}
-            <div className='fixed top-0 left-0 w-screen h-screen z-10 bg-black opacity-30'>
+            <div className='fixed top-0 left-0 w-screen h-screen z-10 bg-primary opacity-30'>
             </div>
             {/* blur */}
             <div onClick={closeMenu} className='fade-in fixed top-0 left-0 w-screen h-screen z-10 backdrop-filter backdrop-blur-sm'>
@@ -32,7 +32,7 @@ export const Sidebar = () => {
 
       <nav className={
         clsx(
-          'fixed p-5 right-0 top-0 w-full md:w-[350px] h-screen bg-gray-600 z-20 shadow-2xl transform transition-all duration-300',
+          'fixed p-5 right-0 top-0 w-full md:w-[350px] h-screen bg-white text-primary z-20 shadow-2xl transform transition-all duration-300',
           {
             'translate-x-full': !isSideMenuOpen
           }
@@ -40,45 +40,44 @@ export const Sidebar = () => {
       }>
 
         <IoCloseOutline
-          size={50}
+          size={35}
           className='absolute top-5 right-5 cursor-pointer'
           onClick={closeMenu}
         />
 
         {/* input */}
         <div className='relative mt-14'>
-          <IoSearchOutline size={20} className='absolute top-1 left-2 text-gray-700' />
+          <IoSearchOutline size={20} className='absolute top-2 left-2 text-primary' />
           <input
             type='text'
             placeholder='Buscar'
-            className='w-full bg-gray-50 rounded pl-10 pr-10 border-b-2 text-xl border-gray-300 focus:outline-none focus:border-blue-500'
+            className='w-full bg-white rounded px-10 py-1 border-b-2 border-primary text-xl text-primary focus:outline-none focus:border-tertiary focus:border-b-2'
           />
         </div>
 
         {/* menú */}
         <div>
-
           {
             !isAuthenticated
               ? (
                 <Link href='/auth/login'
                   onClick={() => { closeMenu() }}
-                  className='flex items-center mt-10 p-2 hover:bg-gray-900 rounded transition-all'>
+                  className='flex items-center mt-10 p-2 hover:bg-primary hover:text-white rounded transition-all'>
                   <IoLogInOutline size={30} />
                   <span className='ml-3 text-xl'>Ingresar</span>
                 </Link>)
               : (
                 <>
-                  <Link href='/profile'
+                  <Link href='/dashboard/profile'
                     onClick={() => { closeMenu() }}
-                    className='flex items-center mt-10 p-2 hover:bg-gray-800 rounded transition-all'>
+                    className='flex items-center mt-10 p-2 hover:bg-primary hover:text-white rounded transition-all'>
                     <IoPersonOutline size={30} />
                     <span className='ml-3 text-xl'>Perfil</span>
                   </Link>
 
                   <button
                     onClick={() => { logout() }}
-                    className='flex items-center w-full mt-10 p-2 hover:bg-gray-800 rounded transition-all'>
+                    className='flex items-center w-full mt-10 p-2 hover:bg-primary hover:text-white rounded transition-all'>
                     <IoLogOutOutline size={30} />
                     <span className='ml-3 text-xl'>Salir</span>
                   </button>
@@ -86,22 +85,22 @@ export const Sidebar = () => {
           }
 
           {/* divisor */}
-          <div className="w-full h-px bg-gray-100 rounded transition-all my-1"></div>
+          <div className="w-full h-px bg-primary rounded transition-all my-5"></div>
         </div>
 
         {
           isAdmin && (
             <>
-              <Link href='/users'
-                className='flex items-center mt-5 p-2 hover:bg-gray-800 rounded transition-all'>
+              <Link href='/dashboard/users'
+                onClick={() => { closeMenu() }}
+                className='flex items-center p-2 hover:bg-primary hover:text-white rounded transition-all'>
                 <IoPeopleOutline size={30} />
                 <span className='ml-3 text-xl'>Usuarios</span>
               </Link>
             </>)
         }
-
       </nav >
 
-    </div >
+    </ >
   )
 }

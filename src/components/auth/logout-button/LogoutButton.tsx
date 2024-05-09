@@ -13,10 +13,11 @@ export const LogoutButton = () => {
   }
 
   return (
-    <p
+    <button
       onClick={async () => { await logout() }}
+      className='hover:underline cursor-pointer'
     >
       <span >Cerrar sesión</span>
-    </p>
+    </button>
   )
 }

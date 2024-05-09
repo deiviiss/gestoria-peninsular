@@ -1,11 +1,17 @@
 import bcrypt from 'bcryptjs'
 
 interface SeedUser {
-  id: string
-  email: string
-  name: string
+  id?: string
+  username: string
   password: string
-  role: 'admin' | 'user'
+  fullname: string
+  zona: string
+  puesto: string
+  email: string
+  movil: string
+  oficina: string
+  direccion: string
+  permiso: string
 }
 
 interface SeedData {
@@ -15,18 +21,28 @@ interface SeedData {
 export const initialData: SeedData = {
   users: [
     {
-      id: '218da11a-3790-4040-b1f0-d5e6de9d5250',
+      username: 'admin',
       email: 'admin@mail.com',
-      name: 'David Hilera',
+      fullname: 'David Hilera',
+      zona: 'Campeche',
       password: bcrypt.hashSync('userseed'),
-      role: 'admin'
+      puesto: 'Admin',
+      movil: '9811234567',
+      oficina: '9811234567',
+      direccion: 'Calle 123',
+      permiso: 'admin'
     },
     {
-      id: '618c01ea-fc81-4ac3-a6b3-bf07d87e607e',
+      username: 'user',
       email: 'user@mail.com',
-      name: 'User',
+      fullname: 'User',
+      zona: 'Campeche',
       password: bcrypt.hashSync('userseed'),
-      role: 'user'
+      puesto: 'User',
+      movil: '9811234567',
+      oficina: '9811234567',
+      direccion: 'Calle 123',
+      permiso: 'user'
     }
   ]
 }

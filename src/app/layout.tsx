@@ -1,13 +1,18 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import { ProviderAuth } from '@/actions'
+// import { Inter } from 'next/font/google'
+import { Providers } from '@/components'
 import './globals.css'
+import { fontSans } from '@/config/fonts'
+import { cn } from '@/libs/utils'
 
-const inter = Inter({ subsets: ['latin'] })
+// const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'nextjs-tailwindcss-typescript-starter',
-  description: 'Next.js + Tailwind CSS + TypeScript starter'
+  title: {
+    template: '%s - Gestoria Peninsular',
+    default: 'Gestoria Peninsular'
+  },
+  description: 'Gestoría Peninsular es una empresa especializada en brindar servicios de asesoramiento y trámites de pensión y retiro por desempleo. ¡Haz una cita con nosotros y simplifica tus trámites!'
 }
 
 export default function RootLayout({
@@ -16,12 +21,18 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="es">
-      <ProviderAuth>
-        <body className={`${inter.className} bg-gray-600 text-white`}>
+    <html lang="es" >
+      <Providers>
+        <body className={
+          // `${fontSans.className} bg-gradient-body`
+          cn(
+            'min-h-screen bg-gradient-body font-sans antialiased',
+            fontSans.variable
+          )
+        }>
           {children}
         </body>
-      </ProviderAuth>
+      </Providers>
     </html>
   )
 }
