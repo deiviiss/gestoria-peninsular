@@ -17,6 +17,11 @@ export const countCustomersByZone = async (id: number) => {
             zona: true
           }
         }
+      },
+      orderBy: {
+        zona: {
+          zona: 'asc'
+        }
       }
     })
 

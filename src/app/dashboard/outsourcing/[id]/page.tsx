@@ -59,7 +59,7 @@ export default async function OutsourcingByIdPage({ params }: Props) {
                   key={index}
                   className='bg-white border-b transition duration-300 ease-in-out hover:bg-gray-200'
                 >
-                  <td className="text-sm font-light px-3 py-2 whitespace-nowrap">{zona.zona}</td>
+                  <td className="text-sm font-light px-3 py-2 whitespace-nowrap text-left">{zona.zona}</td>
                   <td className="text-sm font-light px-3 py-2 whitespace-nowrap">{zona.total}</td>
                 </tr>
               ))
