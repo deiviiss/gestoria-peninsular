@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 // import { Inter } from 'next/font/google'
 import { Providers } from '@/components'
 import './globals.css'
+import { ThemeProvider } from '@/components/providers/theme-provider'
 import { fontSans } from '@/config/fonts'
 import { cn } from '@/libs/utils'
 
@@ -21,16 +22,23 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="es" >
+    <html lang="es" suppressHydrationWarning>
       <Providers>
         <body className={
           // `${fontSans.className} bg-gradient-body`
           cn(
-            'min-h-screen bg-gradient-body font-sans antialiased',
+            'min-h-screen font-sans antialiased',
             fontSans.variable
           )
         }>
-          {children}
+          <ThemeProvider
+            attribute='class'
+            defaultTheme='light'
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
         </body>
       </Providers>
     </html>

@@ -25,11 +25,15 @@ export const TopMenu = () => {
     {
       name: 'Impuestos',
       url: '/dashboard/taxes'
+    },
+    {
+      name: 'Pensiones',
+      url: '/dashboard/pensiones'
     }
   ]
 
   return (
-    <nav className="flex px-5 py-2 bg-white border-b shadow-lg text-primary md:px-8 md:py-4">
+    <nav className="flex px-5 py-2 border-b shadow-lg text-primary md:px-8 md:py-4">
 
       <div className='flex w-full justify-between items-center max-w-7xl mx-auto'>
         {/* logo */}

@@ -41,9 +41,9 @@ const ProfilePage = async () => {
           <p><span className='font-semibold'>Oficina:</span> {userOficina}</p>
           <p><span className='font-semibold'>Dirección:</span> {userAddress}</p>
         </div>
-        <button type='button' className='btn-secondary'>
-          <LogoutButton />
-        </button>
+
+        <LogoutButton />
+
       </div>
 
     </div>

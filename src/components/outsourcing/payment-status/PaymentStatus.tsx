@@ -1,5 +1,6 @@
 'use client'
 
+import { useTheme } from 'next-themes'
 import { IoCardOutline } from 'react-icons/io5'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
@@ -16,14 +17,18 @@ interface PaymentStatusProps {
 const MySwal = withReactContent(Swal)
 
 export const PaymentStatus = ({ isPaid, datePaid, receiptIncomeId }: PaymentStatusProps) => {
-  const iconClassName = isPaid ? 'text-green-800' : 'text-red-800'
+  const iconClassName = isPaid ? 'text-green-800 dark:text-green-500' : 'text-red-800 dark:text-red-500'
   const text = isPaid ? 'Pagado' : 'Pagar'
+
+  const { theme } = useTheme()
 
   const handleTogglePayment = async () => {
     await MySwal.fire({
       html: <TogglePaymentForm />,
       showCancelButton: true,
+      background: theme === 'dark' ? '#1a202c' : '#ffffff',
       confirmButtonColor: '#3085d6',
+      color: theme === 'dark' ? '#ffffff' : '#000000',
       cancelButtonColor: '#d33',
       cancelButtonText: 'Cancelar',
       confirmButtonText: 'Cambiar',

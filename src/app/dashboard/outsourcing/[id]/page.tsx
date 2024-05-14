@@ -46,7 +46,7 @@ export default async function OutsourcingByIdPage({ params }: Props) {
     <main className='flex flex-col items-center justify-center w-full p-2' >
       <div className='flex gap-4 mb-10 w-full'>
         <table className='w-10 text-center m-5'>
-          <thead className='bg-primary text-white border-b'>
+          <thead className='bg-primary dark:bg-secondary text-white border-b'>
             <tr>
               <th scope='col' className='text-sm font-medium px-3 py-2'>Zona</th>
               <th scope='col' className='text-sm font-medium px-3 py-2'>Total</th>
@@ -57,7 +57,7 @@ export default async function OutsourcingByIdPage({ params }: Props) {
               totalZonasCount?.map((zona, index) => (
                 <tr
                   key={index}
-                  className='bg-white border-b transition duration-300 ease-in-out hover:bg-gray-200'
+                  className='bg-white dark:bg-slate-600 border-b transition duration-300 ease-in-out hover:bg-gray-200'
                 >
                   <td className="text-sm font-light px-3 py-2 whitespace-nowrap text-left">{zona.zona}</td>
                   <td className="text-sm font-light px-3 py-2 whitespace-nowrap">{zona.total}</td>
@@ -98,7 +98,7 @@ export default async function OutsourcingByIdPage({ params }: Props) {
       </div>
 
       <table className="min-w-full text-center">
-        <thead className="bg-primary text-white border-b">
+        <thead className="bg-primary dark:bg-secondary text-white border-b">
           <tr>
             <th scope="col" className="text-sm font-medium px-6 py-4">
               Cliente
@@ -120,7 +120,7 @@ export default async function OutsourcingByIdPage({ params }: Props) {
             customers?.map(customer => (
               <tr
                 key={customer.cliente_id}
-                className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-200">
+                className="bg-white dark:bg-slate-600 border-b transition duration-300 ease-in-out hover:bg-gray-200">
 
                 <td className="text-sm font-light px-6 py-4 whitespace-nowrap text-left">
                   {customer.cliente}

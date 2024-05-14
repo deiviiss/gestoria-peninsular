@@ -9,7 +9,7 @@ export const TableOutsourcing = async () => {
   return (
     <div className="mb-10 text-center w-full">
       <table className="min-w-full">
-        <thead className="bg-primary text-white border-b">
+        <thead className="bg-primary dark:bg-secondary text-white border-b">
           <tr>
             <th scope="col" className="text-sm font-medium px-6 py-4">
               Semana
@@ -39,7 +39,7 @@ export const TableOutsourcing = async () => {
             receiptsIncome?.map(receiptIncome => (
               <tr
                 key={receiptIncome.id}
-                className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-200">
+                className="bg-white dark:bg-slate-600 border-b transition duration-300 ease-in-out hover:bg-gray-200">
                 <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
                   {receiptIncome.week}
                 </td>

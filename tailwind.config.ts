@@ -19,6 +19,9 @@ const config = {
       }
     },
     extend: {
+      backgroundImage: {
+        'gradient-body': 'linear-gradient(to right, rgba(0, 75, 141, 0.1) 0%, #F8F8F8 100%)'
+      },
       backgroundColor: {
         primary: '#004B8D',
         'primary-hover': '#3366AA',
