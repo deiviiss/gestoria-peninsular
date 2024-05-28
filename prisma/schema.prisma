@@ -43,6 +43,9 @@ model Activation {
   estado                String    @db.VarChar(60)
   editado               String    @db.VarChar(255)
   infonavit             Int       @db.TinyInt
+  asesor_id             Int
+  afore_id              Int
+  zona_id               Int
   nombre_referencia     String    @db.VarChar(45)
   apellido_referencia   String    @db.VarChar(45)
   parentesco_referencia String    @db.VarChar(45)
@@ -52,13 +55,9 @@ model Activation {
   tipo_tramite          String    @default("activate") @db.VarChar(8)
   fecha_alta            DateTime? @db.Date
   salario               Decimal
-
-  afore_id  Int
-  afore     Afore  @relation(fields: [afore_id], references: [afore_id], onDelete: NoAction, onUpdate: NoAction)
-  asesor_id Int
-  asesor    Asesor @relation(fields: [asesor_id], references: [asesor_id], onDelete: NoAction, onUpdate: NoAction)
-  zona_id   Int
-  zona      Zona   @relation(fields: [zona_id], references: [zona_id], onDelete: NoAction, onUpdate: NoAction)
+  afore                 Afore     @relation(fields: [afore_id], references: [afore_id], onDelete: NoAction, onUpdate: NoAction)
+  asesor                Asesor    @relation(fields: [asesor_id], references: [asesor_id], onDelete: NoAction, onUpdate: NoAction)
+  zona                  Zona      @relation(fields: [zona_id], references: [zona_id], onDelete: NoAction, onUpdate: NoAction)
 
   @@index([afore_id], map: "Activate_afore_id_fkey")
   @@index([asesor_id], map: "Activate_asesor_id_fkey")
@@ -70,8 +69,8 @@ model Afore {
   afore_id    Int          @id @unique(map: "afore_id_UNIQUE") @default(autoincrement())
   afore       String       @db.VarChar(45)
   activations Activation[]
-  preAltas    PreAlta[]
   customers   Customer[]
+  preAltas    PreAlta[]
 
   @@map("afores")
 }
@@ -93,59 +92,56 @@ model Asesor {
   create_at        DateTime?        @db.Date
   update_at        DateTime?        @db.Date
   activations      Activation[]
+  customers        Customer[]
   preAltas         PreAlta[]
   relacionAsesores RelacionAsesor[]
-  customers        Customer[]
 
   @@map("asesores")
 }
 
 model Customer {
-  cliente_id          Int       @id @unique(map: "cliente_id_UNIQUE") @default(autoincrement())
-  cliente             String?   @db.VarChar(255)
-  curp                String?   @db.VarChar(18)
-  nss                 String?   @db.VarChar(11)
+  cliente_id          Int              @id @unique(map: "cliente_id_UNIQUE") @default(autoincrement())
+  asesor_id           Int
+  cliente             String?          @db.VarChar(255)
+  curp                String?          @db.VarChar(18)
+  nss                 String?          @db.VarChar(11)
   monto               Decimal?
-  fecha_tramite       DateTime? @db.Date
-  fecha_baja          DateTime? @db.Date
-  fecha_ultima_baja   DateTime? @db.Date
-  fecha_ultimo_retiro DateTime? @db.Date
+  fecha_tramite       DateTime?        @db.Date
+  fecha_baja          DateTime?        @db.Date
+  fecha_ultima_baja   DateTime?        @db.Date
+  fecha_ultimo_retiro DateTime?        @db.Date
   scotizadas          Int
   sdescontadas        Int
-  direccion           String?   @db.VarChar(255)
-  telefono            String?   @db.VarChar(11)
-  observaciones       String?   @db.Text
-  status              String?   @default("Modificando") @db.VarChar(60)
-  motivo              String?   @db.VarChar(60)
-  tipo_tramite        String?   @default("Desempleo") @db.VarChar(45)
-  referencia          String?   @db.VarChar(255)
-  editado             String?   @db.VarChar(60)
-  infonavit           Int?      @db.TinyInt
+  direccion           String?          @db.VarChar(255)
+  telefono            String?          @db.VarChar(11)
+  observaciones       String?          @db.Text
+  status              String?          @default("Modificando") @db.VarChar(60)
+  motivo              String?          @db.VarChar(60)
+  tipo_tramite        String?          @default("Desempleo") @db.VarChar(45)
+  referencia          String?          @db.VarChar(255)
+  editado             String?          @db.VarChar(60)
+  infonavit           Int?             @db.TinyInt
   region              Int?
-
-  //! Establecer relacion revision rompe
-  revision Int? @default(5)
-
-  update_at   DateTime? @db.Date
-  solution_at DateTime? @db.Date
-  create_at   DateTime? @db.Date
-  email       String    @default("sin-asignar@mail.com") @db.VarChar(255)
-  rfc         String    @default("sin - asignar") @db.VarChar(13)
-  entidad     String    @default("sin - asignar") @db.VarChar(60)
-
-  llamada_id      Int?           @default(1)
-  llamada         Llamada?       @relation(fields: [llamada_id], references: [llamada_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_clientes_llamadas")
-  asesor_id       Int
-  asesor          Asesor         @relation(fields: [asesor_id], references: [asesor_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_clientes_asesores")
-  afore_id        Int
-  afore           Afore          @relation(fields: [afore_id], references: [afore_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_clientes_afores")
-  zona_id         Int
-  zona            Zona           @relation(fields: [zona_id], references: [zona_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_clientes_zonas")
-  outsourcing_id  Int            @default(6)
-  outsourcing     Outsourcing    @relation(fields: [outsourcing_id], references: [id], map: "fk_clientes_outsourcings")
-  receiptIncomeId Int?
-  receiptIncome   ReceiptIncome? @relation(fields: [receiptIncomeId], references: [id])
-  liquidacion     Liquidacion?
+  revision            Int?             @default(5)
+  afore_id            Int
+  zona_id             Int
+  outsourcing_id      Int              @default(6)
+  llamada_id          Int?             @default(1)
+  update_at           DateTime?        @db.Date
+  solution_at         DateTime?        @db.Date
+  create_at           DateTime?        @db.Date
+  email               String           @default("sin-asignar@mail.com") @db.VarChar(255)
+  rfc                 String           @default("sin - asignar") @db.VarChar(13)
+  entidad             String           @default("sin - asignar") @db.VarChar(60)
+  receiptIncomeId     Int?
+  receipt_incomes     receiptIncome?   @relation(fields: [receiptIncomeId], references: [id])
+  afore               Afore            @relation(fields: [afore_id], references: [afore_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_clientes_afores")
+  asesor              Asesor           @relation(fields: [asesor_id], references: [asesor_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_clientes_asesores")
+  llamada             Llamada?         @relation(fields: [llamada_id], references: [llamada_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_clientes_llamadas")
+  outsourcing         Outsourcing      @relation(fields: [outsourcing_id], references: [id], map: "fk_clientes_outsourcings")
+  zona                Zona             @relation(fields: [zona_id], references: [zona_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_clientes_zonas")
+  liquidacion         Liquidacion?
+  pensionesDetails    PensionesDetail?
 
   @@index([afore_id], map: "fk_clientes_afores_idx")
   @@index([asesor_id], map: "fk_clientes_asesores_idx")
@@ -209,10 +205,9 @@ model Inventario {
   serie         String  @default("No anotado") @db.VarChar(90)
   cantidad      Int     @default(0)
   status        String  @default("Ok") @db.VarChar(45)
+  zona_id       Int
   observaciones String? @db.VarChar(255)
-
-  zona_id Int
-  zona    Zona @relation(fields: [zona_id], references: [zona_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_zona_inventario")
+  zona          Zona    @relation(fields: [zona_id], references: [zona_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_zona_inventario")
 
   @@index([zona_id], map: "fk_zona_inventario_idx")
   @@map("inventarios")
@@ -242,6 +237,7 @@ model Laboral {
 
 model Liquidacion {
   liquidacion_id    Int       @id @default(autoincrement())
+  cliente_id        Int       @unique(map: "cliente_id_UNIQUE")
   monto             Decimal?  @default(0.00) @db.Decimal(63, 2)
   porcentaje        String?   @db.VarChar(60)
   aseguramiento     Decimal?  @default(0.00) @db.Decimal(63, 2)
@@ -258,11 +254,9 @@ model Liquidacion {
   status            String?   @default("open") @db.VarChar(45)
   observaciones     String?   @db.VarChar(255)
   cierre            String?   @db.VarChar(60)
-
-  cliente_id Int      @unique(map: "cliente_id_UNIQUE")
-  customer   Customer @relation(fields: [cliente_id], references: [cliente_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_liquidaciones_clientes")
-  cuenta_id  Int?
-  cuenta     Cuenta?  @relation(fields: [cuenta_id], references: [cuenta_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_liquidaciones_cuentas")
+  cuenta_id         Int?
+  customer          Customer  @relation(fields: [cliente_id], references: [cliente_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_liquidaciones_clientes")
+  cuenta            Cuenta?   @relation(fields: [cuenta_id], references: [cuenta_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_liquidaciones_cuentas")
 
   @@index([cuenta_id], map: "fk_liquidaciones_cuentas_idx")
   @@index([cliente_id], map: "fk_tramites_idx")
@@ -299,12 +293,11 @@ model Motivo {
 }
 
 model Outsourcing {
-  id    Int     @id @unique(map: "outsourcing_id_UNIQUE") @default(autoincrement())
-  name  String  @unique(map: "outsourcing_UNIQUE") @db.VarChar(45)
-  email String? @default("example@mail.com") @db.VarChar(45)
-
-  receiptIncome ReceiptIncome[]
-  customers     Customer[]
+  id              Int             @id @unique(map: "outsourcing_id_UNIQUE") @default(autoincrement())
+  name            String          @unique(map: "outsourcing_UNIQUE") @db.VarChar(45)
+  email           String?         @default("example@mail.com") @db.VarChar(45)
+  customers       Customer[]
+  receipt_incomes receiptIncome[]
 
   @@map("outsourcings")
 }
@@ -319,12 +312,15 @@ model PreAlta {
   rfc                   String    @db.VarChar(13)
   scotizadas            Int
   sdescontadas          Int
+  asesor_id             Int
   fecha_ultimo_retiro   DateTime? @db.Date
+  afore_id              Int
   monto                 Decimal
   direccion             String    @db.VarChar(150)
   entidad               String    @db.VarChar(60)
   telefono              String    @db.VarChar(10)
   observaciones         String?   @db.Text
+  zona_id               Int
   create_at             DateTime? @default(now())
   editado               String    @db.VarChar(255)
   region                Int
@@ -337,13 +333,9 @@ model PreAlta {
   tipo_tramite          String    @db.VarChar(45)
   fecha_ultima_baja     DateTime  @db.Date
   email                 String    @default("sin-asignar@mail.com") @db.VarChar(255)
-
-  asesor_id Int
-  asesor    Asesor @relation(fields: [asesor_id], references: [asesor_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_asesor")
-  afore_id  Int
-  afore     Afore  @relation(fields: [afore_id], references: [afore_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_afore")
-  zona_id   Int
-  zona      Zona   @relation(fields: [zona_id], references: [zona_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_zona")
+  afore                 Afore     @relation(fields: [afore_id], references: [afore_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_afore")
+  asesor                Asesor    @relation(fields: [asesor_id], references: [asesor_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_asesor")
+  zona                  Zona      @relation(fields: [zona_id], references: [zona_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_zona")
 
   @@index([afore_id], map: "fk_afore_idx")
   @@index([asesor_id], map: "fk_asesor_idx")
@@ -353,10 +345,10 @@ model PreAlta {
 
 model RelacionAsesor {
   region_id Int    @id @default(autoincrement())
-  region    Int?
   asesor_id Int
-  asesor    Asesor @relation(fields: [asesor_id], references: [asesor_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_r_asesor")
   zona_id   Int
+  region    Int?
+  asesor    Asesor @relation(fields: [asesor_id], references: [asesor_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_r_asesor")
   zona      Zona   @relation(fields: [zona_id], references: [zona_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_r_zona")
 
   @@index([asesor_id], map: "fk_asesor_idx")
@@ -384,39 +376,50 @@ model State {
   id_status Int    @id @default(autoincrement()) @db.UnsignedInt
   status    String @unique(map: "status_UNIQUE") @db.VarChar(45)
 
-  //! shoub be have a relation with the table cliente
-
   @@map("status")
 }
 
 model Zona {
-  zona_id     Int    @id @unique(map: "zona_id_UNIQUE") @default(autoincrement())
-  zona        String @unique(map: "zona_UNIQUE") @db.VarChar(60)
-  region      Int
-  status      String @db.VarChar(45)
-  liquidacion String @db.VarChar(45)
-  direccion   String @db.VarChar(160)
-
+  zona_id          Int              @id @unique(map: "zona_id_UNIQUE") @default(autoincrement())
+  zona             String           @unique(map: "zona_UNIQUE") @db.VarChar(60)
+  region           Int
+  status           String           @db.VarChar(45)
+  liquidacion      String           @db.VarChar(45)
+  direccion        String           @db.VarChar(160)
   activations      Activation[]
+  customers        Customer[]
   inventarios      Inventario[]
   preAltas         PreAlta[]
   relacionAsesores RelacionAsesor[]
-  customers        Customer[]
 
   @@map("zonas")
 }
 
-model ReceiptIncome {
-  id     Int       @id @default(autoincrement())
-  week   Int
-  total  Int
-  cost   Int
-  isPaid Boolean   @default(false)
-  atPaid DateTime?
+model PensionesDetail {
+  id         Int      @id @default(autoincrement())
+  porcentaje Float?
+  pago       Decimal? @default(0.00) @db.Decimal(63, 2)
+  pago_imss  Decimal? @default(0.00) @db.Decimal(63, 2)
+  encargado  String?  @db.VarChar(255)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  cliente_id Int      @unique
+  customer   Customer @relation(fields: [cliente_id], references: [cliente_id], onDelete: Cascade)
 
-  customers      Customer[]
+  @@map("pensiones_details")
+}
+
+model receiptIncome {
+  id             Int         @id @default(autoincrement())
+  week           Int
+  total          Int
+  cost           Int
+  isPaid         Boolean     @default(false)
+  atPaid         DateTime?
   outsourcing_id Int         @default(7)
-  outsourcing    Outsourcing @relation(fields: [outsourcing_id], references: [id])
+  clientes       Customer[]
+  outsourcing    Outsourcing @relation(fields: [outsourcing_id], references: [id], map: "receiptIncomes_outsourcing_id_fkey")
 
-  @@map("receiptIncomes")
+  @@index([outsourcing_id], map: "receiptIncomes_outsourcing_id_fkey")
+  @@map("receipt_incomes")
 }

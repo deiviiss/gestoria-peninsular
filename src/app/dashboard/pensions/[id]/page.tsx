@@ -1,6 +1,5 @@
-import { getCustomerById } from '@/actions'
-import { Title } from '@/components'
-import ButtonBack from '@/components/ui/button-back/ButtonBack'
+import { getPensionById } from '@/actions'
+import { ButtonBack, Title } from '@/components'
 import { getDateFormatSpanish } from '@/utils'
 
 interface Props {
@@ -9,15 +8,14 @@ interface Props {
   }
 }
 
-export default async function CustomersByIdPage({ params }: Props) {
-  const { id } = params
-  const customer = await getCustomerById(id)
+export default async function PensionsByIdPage({ params }: Props) {
+  const pension = await getPensionById(params.id)
 
-  if (customer === null) {
+  if (pension === null) {
     return (
       <main className='flex flex-col items-center justify-center w-full p-2' >
-        <Title title='Cliente' subtitle='' className='text-xl text-center' />
-        <p className=' my-5'>No se encontro el cliente</p>
+        <Title title='Datos del cliente' subtitle='' className='text-xl text-center' />
+        <p className=' my-5'>No se encontraron resultados</p>
       </main>
     )
   }
@@ -29,21 +27,21 @@ export default async function CustomersByIdPage({ params }: Props) {
         <div className='flex flex-col items-center justify-center w-full'>
           <div className='flex gap-2 items-center justify-center w-full'>
             <p className='text-lg font-semibold'>Cliente</p>
-            <p className='capitalize'>{customer.cliente}</p>
+            <p className='capitalize'>{pension.cliente}</p>
           </div>
           <div className='flex gap-2 items-center justify-center w-full'>
             <p className='text-lg font-semibold'>Fecha de tramite</p>
-            <p>{getDateFormatSpanish(customer.fecha_tramite)}</p>
+            <p>{getDateFormatSpanish(pension.fecha_tramite)}</p>
           </div>
           <div className='flex gap-2 items-center justify-center w-full'>
             <p className='text-lg font-semibold'>Zona</p>
-            <p className='capitalize'>{customer.zona.zona}</p>
+            <p className='capitalize'>{pension.zona.zona}</p>
           </div>
           {
-            customer.observaciones && (
+            pension.observaciones && (
               <div className='flex flex-col gap-2 items-center justify-center w-full'>
                 <p className='text-lg font-semibold'>Observaciones</p>
-                <p>{customer.observaciones}</p>
+                <p>{pension.observaciones}</p>
               </div>
             )
           }

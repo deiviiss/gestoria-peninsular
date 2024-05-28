@@ -2,8 +2,8 @@
 
 import prisma from '@/libs/prisma'
 
-export const getCustomerById = async (id: number) => {
-  const customer = await prisma.customer.findUnique({
+export const getPensionById = async (id: number) => {
+  const pension = await prisma.customer.findUnique({
     where: {
       cliente_id: Number(id)
     },
@@ -13,6 +13,14 @@ export const getCustomerById = async (id: number) => {
       fecha_tramite: true,
       status: true,
       observaciones: true,
+      pensionesDetails: {
+        select: {
+          porcentaje: true,
+          pago: true,
+          pago_imss: true,
+          encargado: true
+        }
+      },
       zona: {
         select: {
           zona: true
@@ -21,9 +29,9 @@ export const getCustomerById = async (id: number) => {
     }
   })
 
-  if (!customer) {
+  if (!pension) {
     return null
   }
 
-  return customer
+  return pension
 }

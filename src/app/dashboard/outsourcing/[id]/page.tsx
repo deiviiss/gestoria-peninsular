@@ -72,7 +72,7 @@ export default async function OutsourcingByIdPage({ params }: Props) {
 
           <div className='grid grid-cols-[250px,1fr] gap-1 gap-y-5 font-medium max-w-[800px]'>
             <p>Oursourcing: <span className='font-normal'>{receiptIncome.outsourcing.name}</span></p>
-            <p>Costo: <span className='font-normal'>{currencyFormat(receiptIncome.cost)}</span></p>
+            <p>Costo: <span className='font-normal'>{currencyFormat(receiptIncome.cost | 0)}</span></p>
             <p>Total de ingresos: <span className='font-normal'>{receiptIncome.total}</span></p>
             {
               receiptIncome.isPaid && (

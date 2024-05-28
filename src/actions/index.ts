@@ -12,3 +12,8 @@ export { toggleStatusPaid } from '@/actions/receiptsIncome/toggle-status-paid'
 
 // customers
 export { getCustomerById } from '@/actions/customers/get-customer-by-id'
+export { getCustomersPensiones } from '@/actions/customers/get-customers-pensiones'
+
+// pensions
+export { getPensions } from '@/actions/pensions/get-pensions'
+export { getPensionById } from '@/actions/pensions/get-pension-by-id'

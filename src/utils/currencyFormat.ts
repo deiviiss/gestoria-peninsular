@@ -1,8 +1,12 @@
-export const currencyFormat = (value: number) => {
+import { type Decimal } from '@prisma/client/runtime/library'
+
+export const currencyFormat = (value: number | Decimal | null | undefined) => {
+  if (value === null || value === undefined) return 'N/A'
+
   return new Intl.NumberFormat('es-US', {
     style: 'currency',
     currency: 'USD',
     minimumFractionDigits: 2,
     maximumFractionDigits: 2
-  }).format(value)
+  }).format(Number(value))
 }

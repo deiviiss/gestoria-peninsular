@@ -28,7 +28,7 @@ export const TopMenu = () => {
     },
     {
       name: 'Pensiones',
-      url: '/dashboard/pensiones'
+      url: '/dashboard/pensions'
     }
   ]
 

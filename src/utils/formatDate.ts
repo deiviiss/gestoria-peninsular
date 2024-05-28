@@ -10,6 +10,7 @@ const months = [
 
 export const getDateFormatSpanish = (date: Date | null): string => {
   if (!date) return 'Por pagar'
+  date.setDate(date.getDate() + 1)
 
   const dayWeek = days[date.getDay()]
   const dayMonth = date.getDate().toString().padStart(2, '0')
