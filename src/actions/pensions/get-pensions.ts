@@ -1,7 +1,7 @@
 'use server'
 
 import { type GetPensionsResponse, type PaginationOptions } from '@/interfaces'
-import prisma from '@/libs/prisma'
+import prisma from '@/lib/prisma'
 import { validatePageNumber } from '@/utils'
 
 export const getPensions = async ({ page = 1, take = 12, query = '' }: PaginationOptions): Promise<GetPensionsResponse> => {
@@ -31,13 +31,13 @@ export const getPensions = async ({ page = 1, take = 12, query = '' }: Paginatio
         cliente: true,
         tipo_tramite: true,
         monto: true,
-        status: true,
-        pensionesDetails: {
+        pensionsDetails: {
           select: {
             porcentaje: true,
             pago: true,
             pago_imss: true,
-            encargado: true
+            encargado: true,
+            statusPensionId: true
           }
         }
       },

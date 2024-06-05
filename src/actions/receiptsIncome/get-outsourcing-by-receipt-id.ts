@@ -1,7 +1,7 @@
 'use server'
 
 import { type Outsourcing } from '@prisma/client'
-import prisma from '@/libs/prisma'
+import prisma from '@/lib/prisma'
 
 export const getOutsourcingByReceiptId = async (id: number): Promise<Outsourcing | null> => {
   try {

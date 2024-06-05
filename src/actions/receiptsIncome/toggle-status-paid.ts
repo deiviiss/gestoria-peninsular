@@ -1,7 +1,7 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import prisma from '@/libs/prisma'
+import prisma from '@/lib/prisma'
 
 export const toggleStatusPaid = async (id: number, statusPaid: boolean) => {
   try {

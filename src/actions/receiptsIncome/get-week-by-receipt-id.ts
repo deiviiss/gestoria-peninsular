@@ -1,6 +1,6 @@
 'use server'
 
-import prisma from '@/libs/prisma'
+import prisma from '@/lib/prisma'
 
 export const getWeekByReceiptId = async (id: number) => {
   try {

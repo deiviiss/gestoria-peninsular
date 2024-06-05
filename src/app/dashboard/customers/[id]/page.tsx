@@ -1,6 +1,6 @@
 import { getCustomerById } from '@/actions'
-import { Title } from '@/components'
-import ButtonBack from '@/components/ui/button-back/ButtonBack'
+import { ButtonBack, Title } from '@/components'
+
 import { getDateFormatSpanish } from '@/utils'
 
 interface Props {

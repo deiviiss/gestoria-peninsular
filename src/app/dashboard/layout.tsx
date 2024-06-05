@@ -9,15 +9,15 @@ export default async function DashboardLayout({
 }>) {
   const user = await getUserSessionServer()
 
-  if (!user) {
-    redirect('/auth/login')
+  if (user?.role !== 'admin') {
+    redirect('/')
   }
 
   return (
     <main className="min-h-screen">
       <TopMenu />
       <Sidebar />
-      <div className='px-1 sm:px-10 py-0 sm:py-5  mx-auto'>
+      <div className='px-1 sm:px-10 py-0 sm:py-5 mx-auto'>
         {children}
       </div>
       <FooterDashboard />

@@ -134,14 +134,14 @@ model Customer {
   rfc                 String           @default("sin - asignar") @db.VarChar(13)
   entidad             String           @default("sin - asignar") @db.VarChar(60)
   receiptIncomeId     Int?
-  receipt_incomes     receiptIncome?   @relation(fields: [receiptIncomeId], references: [id])
+  ReceiptIncome       ReceiptIncome?   @relation(fields: [receiptIncomeId], references: [id])
   afore               Afore            @relation(fields: [afore_id], references: [afore_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_clientes_afores")
   asesor              Asesor           @relation(fields: [asesor_id], references: [asesor_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_clientes_asesores")
   llamada             Llamada?         @relation(fields: [llamada_id], references: [llamada_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_clientes_llamadas")
   outsourcing         Outsourcing      @relation(fields: [outsourcing_id], references: [id], map: "fk_clientes_outsourcings")
   zona                Zona             @relation(fields: [zona_id], references: [zona_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_clientes_zonas")
   liquidacion         Liquidacion?
-  pensionesDetails    PensionesDetail?
+  pensionsDetails     PensionsDetails?
 
   @@index([afore_id], map: "fk_clientes_afores_idx")
   @@index([asesor_id], map: "fk_clientes_asesores_idx")
@@ -293,11 +293,11 @@ model Motivo {
 }
 
 model Outsourcing {
-  id              Int             @id @unique(map: "outsourcing_id_UNIQUE") @default(autoincrement())
-  name            String          @unique(map: "outsourcing_UNIQUE") @db.VarChar(45)
-  email           String?         @default("example@mail.com") @db.VarChar(45)
-  customers       Customer[]
-  receipt_incomes receiptIncome[]
+  id             Int             @id @unique(map: "outsourcing_id_UNIQUE") @default(autoincrement())
+  name           String          @unique(map: "outsourcing_UNIQUE") @db.VarChar(45)
+  email          String?         @default("example@mail.com") @db.VarChar(45)
+  customers      Customer[]
+  receiptIncomes ReceiptIncome[]
 
   @@map("outsourcings")
 }
@@ -395,21 +395,23 @@ model Zona {
   @@map("zonas")
 }
 
-model PensionesDetail {
-  id         Int      @id @default(autoincrement())
-  porcentaje Float?
-  pago       Decimal? @default(0.00) @db.Decimal(63, 2)
-  pago_imss  Decimal? @default(0.00) @db.Decimal(63, 2)
-  encargado  String?  @db.VarChar(255)
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  cliente_id Int      @unique
-  customer   Customer @relation(fields: [cliente_id], references: [cliente_id], onDelete: Cascade)
+model PensionsDetails {
+  id              Int           @id @default(autoincrement())
+  porcentaje      Float?
+  pago            Decimal?      @default(0.00) @db.Decimal(63, 2)
+  pago_imss       Decimal?      @default(0.00) @db.Decimal(63, 2)
+  encargado       String?       @db.VarChar(255)
+  created_at      DateTime      @default(now())
+  updated_at      DateTime?     @updatedAt
+  cliente_id      Int           @unique
+  customer        Customer      @relation(fields: [cliente_id], references: [cliente_id], onDelete: Cascade)
+  statusPensionId Int           @default(1)
+  StatusPension   StatusPension @relation(fields: [statusPensionId], references: [id])
 
   @@map("pensiones_details")
 }
 
-model receiptIncome {
+model ReceiptIncome {
   id             Int         @id @default(autoincrement())
   week           Int
   total          Int
@@ -417,9 +419,18 @@ model receiptIncome {
   isPaid         Boolean     @default(false)
   atPaid         DateTime?
   outsourcing_id Int         @default(7)
-  clientes       Customer[]
-  outsourcing    Outsourcing @relation(fields: [outsourcing_id], references: [id], map: "receiptIncomes_outsourcing_id_fkey")
+  customers      Customer[]
+  outsourcing    Outsourcing @relation(fields: [outsourcing_id], references: [id])
 
-  @@index([outsourcing_id], map: "receiptIncomes_outsourcing_id_fkey")
   @@map("receipt_incomes")
+}
+
+model StatusPension {
+  id          Int     @id @default(autoincrement())
+  status      String  @unique(map: "status_UNIQUE") @db.VarChar(45)
+  description String?
+
+  pensionsDetails PensionsDetails[] // Relación uno a muchos con PensionsDetails
+
+  @@map("status_pensions")
 }

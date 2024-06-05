@@ -17,3 +17,5 @@ export { getCustomersPensiones } from '@/actions/customers/get-customers-pension
 // pensions
 export { getPensions } from '@/actions/pensions/get-pensions'
 export { getPensionById } from '@/actions/pensions/get-pension-by-id'
+export { getStatusPensions } from '@/actions/pensions/get-status-pensions'
+export { getPensionStatus } from '@/actions/pensions/get-change-status'

@@ -17,7 +17,7 @@ export default async function OutsourcingByIdPage({ params }: Props) {
 
   if (receiptIncome === null) {
     return (
-      <main className='flex flex-col items-center justify-center w-full p-2' >
+      <main className='flex flex-col items-center justify-center max-w-7xl mx-auto w-full gap-3 p-2' >
         <Title title='Outsourcing' subtitle='Lista de pagos hechos a outsourcing' className='text-xl text-center' />
         <p className=' my-5'>No se encontraron pagos</p>
       </main>
@@ -26,7 +26,7 @@ export default async function OutsourcingByIdPage({ params }: Props) {
 
   if (!ok) {
     return (
-      <main className='flex flex-col items-center justify-center w-full p-2' >
+      <main className='flex flex-col items-center justify-center w-full max-w-7xl mx-auto p-2' >
         <Title title='Outsourcing' subtitle='Lista de pagos hechos a outsourcing' className='text-xl text-center' />
         <p className=' my-5'>Cargando...</p>
       </main>

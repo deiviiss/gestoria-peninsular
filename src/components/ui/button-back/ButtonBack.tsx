@@ -2,17 +2,22 @@
 
 import { useRouter } from 'next/navigation'
 
-export const ButtonBack = () => {
+interface IButtonBackProps {
+  className?: string
+}
+
+export const ButtonBack = ({ className }: IButtonBackProps) => {
   const router = useRouter()
 
   return (
-    <button
-      onClick={() => { router.back() }}
-      className='p-2 text-white bg-blue-500 rounded-md'
-    >
-      Regresar
-    </button>
+    <div className={`${className}`}>
+      <button
+        onClick={() => { router.back() }}
+        className='p-2 text-primary hover:cursor-pointer hover:underline rounded-md'
+      >
+        Regresar
+      </button>
+
+    </div>
   )
 }
-
-export default ButtonBack

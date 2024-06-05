@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import { PopoverPension } from '../popover/Popover'
 import { type Pension } from '@/interfaces'
 import { currencyFormat } from '@/utils'
 
@@ -52,26 +52,22 @@ export const TablePensiones = async ({ pensions }: Props) => {
                   {pension.tipo_tramite}
                 </td>
                 <td className="text-sm font-light px-6 py-4 whitespace-nowrap">
-                  {pension.pensionesDetails?.porcentaje}
+                  {pension.pensionsDetails?.porcentaje ? pension.pensionsDetails?.porcentaje : '0'}
                 </td>
                 <td className="flex items-center justify-center text-sm font-light px-6 py-4 whitespace-nowrap">
                   {currencyFormat(pension.monto)}
                 </td>
                 <td className="text-sm font-light px-6 py-4 whitespace-nowrap ">
-                  {currencyFormat(pension.pensionesDetails?.pago)}
+                  {currencyFormat(pension.pensionsDetails?.pago)}
                 </td>
                 <td className="text-sm font-light px-6 py-4 whitespace-nowrap ">
-                  {pension.status}
+                  {pension.pensionsDetails?.statusPensionId === 1 ? 'En espera' : 'En el IMSS'}
                 </td>
                 <td className="text-sm font-light px-6 py-4 whitespace-nowrap ">
-                  {currencyFormat(pension.pensionesDetails?.pago_imss)}
+                  {currencyFormat(pension.pensionsDetails?.pago_imss)}
                 </td>
                 <td className="text-sm font-light px-6 py-4 whitespace-nowrap" >
-                  <Link
-                    href={`/dashboard/pensions/${pension.cliente_id}`}
-                    className="hover:underline"
-                    key={pension.cliente_id}
-                  >Detalles</Link>
+                  <PopoverPension pension={pension} />
                 </td>
               </tr>
             ))

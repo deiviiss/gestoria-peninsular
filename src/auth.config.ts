@@ -4,7 +4,7 @@ import Credentials from 'next-auth/providers/credentials'
 import Github from 'next-auth/providers/github'
 import Google from 'next-auth/providers/google'
 import { z } from 'zod'
-import prisma from '@/libs/prisma'
+import prisma from '@/lib/prisma'
 
 export const authConfig: NextAuthConfig = {
   pages: {

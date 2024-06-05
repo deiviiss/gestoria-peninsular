@@ -3,7 +3,7 @@ import { useSearchParams, usePathname, useRouter } from 'next/navigation'
 import { FaSearch } from 'react-icons/fa'
 import { useDebouncedCallback } from 'use-debounce'
 
-export default function Search({
+export default function SearchPension({
   placeholder
 }: {
   placeholder: string

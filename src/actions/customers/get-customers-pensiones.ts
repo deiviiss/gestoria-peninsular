@@ -1,7 +1,7 @@
 'use server'
 
 import { type CustomerPensiones } from '@/interfaces'
-import prisma from '@/libs/prisma'
+import prisma from '@/lib/prisma'
 
 export const getCustomersPensiones = async (): Promise<CustomerPensiones[] | null> => {
   const customers = await prisma.customer.findMany({

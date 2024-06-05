@@ -24,7 +24,7 @@ const ProfilePage = async () => {
   const userPuesto = user.puesto || 'Puesto de usuario'
 
   return (
-    <div className='flex flex-col items-center gap-3'>
+    <div className='flex flex-col w-full max-w-7xl mx-auto items-center gap-3'>
       <h1 className='p-10 text-3xl'>Perfil de usuario</h1>
 
       {/* // TODO: Add the user card component here */}

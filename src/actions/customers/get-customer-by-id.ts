@@ -1,6 +1,6 @@
 'use server'
 
-import prisma from '@/libs/prisma'
+import prisma from '@/lib/prisma'
 
 export const getCustomerById = async (id: number) => {
   const customer = await prisma.customer.findUnique({

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { getUserSessionServer } from '@/actions'
 import { Title, UsersGrid } from '@/components'
-import prisma from '@/libs/prisma'
+import prisma from '@/lib/prisma'
 
 export const metadata: Metadata = {
   title: 'Pagina de usuarios',
@@ -19,7 +19,7 @@ export default async function UsersPage() {
   const users = await prisma.user.findMany()
 
   return (
-    <div>
+    <div className='flex flex-col w-full max-w-7xl mx-auto items-center gap-3'>
       <Title title='Página de Usuarios' subtitle='Muestra todos los usuarios' />
       <UsersGrid users={users} />
     </div>

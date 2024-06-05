@@ -36,7 +36,7 @@ const PensionesPage = async ({ searchParams }: Props) => {
   }
 
   return (
-    <div className='flex flex-col items-center justify-center w-full gap-3'>
+    <div className='flex flex-col items-center justify-center w-full mx-auto max-w-7xl gap-3 p-2'>
       <Title title='Pensiones y Negativas' subtitle='Todos los trámites de pensiones y negativas de pensión' className='text-xl w-full' />
 
       <div className='w-full flex items-center justify-end mb-2'>
