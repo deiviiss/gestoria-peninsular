@@ -22,30 +22,19 @@ import {
   SelectValue
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { type IPensionStatus } from '@/interfaces'
+import { type IStatusPension, type IPensionStatus } from '@/interfaces'
 
 interface Props {
   pension: IPensionStatus
+  status: IStatusPension[]
 }
-
-const status = [
-  {
-    id: 1,
-    name: 'En espera'
-  },
-  {
-    id: 2,
-    name: 'En el IMSS'
-  }
-
-]
 
 const pensionsDetailsSchema = z.object({
   observations: z.string().min(10, { message: 'La observación debe tener al menos 10 carácteres' }),
   statusPensionId: z.string()
 })
 
-export const ChangeStatusForm = ({ pension }: Props) => {
+export const ChangeStatusForm = ({ pension, status }: Props) => {
   const router = useRouter()
 
   // 1. Define your form.
@@ -87,7 +76,7 @@ export const ChangeStatusForm = ({ pension }: Props) => {
                   <SelectContent>
                     {
                       status.map((item) => (
-                        <SelectItem key={item.id} value={`${item.id}`}>{item.name}</SelectItem>
+                        <SelectItem key={item.id} value={`${item.id}`}>{item.status}</SelectItem>
                       ))
                     }
                   </SelectContent>

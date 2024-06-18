@@ -55,7 +55,7 @@ export function PopoverPension({ pension }: Props) {
           <div className="flex items-center gap-2">
             <IoCloudUploadOutline className="w-4 h-4" />
             <Link
-              href={'/dashboard/upload-documents'}
+              href={'/dashboard/pensions/upload-documents'}
               className="hover:underline"
             >
               Subir documento

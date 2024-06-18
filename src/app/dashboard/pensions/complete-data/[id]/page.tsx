@@ -1,5 +1,5 @@
 import { type Metadata } from 'next'
-import { getPensionById } from '@/actions'
+import { getPensionById, getStatusPensions } from '@/actions'
 import { ButtonBack, CompletePensionForm, Title } from '@/components'
 
 export const metadata: Metadata = {
@@ -15,6 +15,19 @@ interface Props {
 
 const CompleteDataPage = async ({ params }: Props) => {
   const pension = await getPensionById(params.id)
+  const { statusPensions } = await getStatusPensions()
+
+  if (!statusPensions || statusPensions === undefined) {
+    return (
+      <div className='flex flex-col items-center justify-center gap-3'>
+        <Title title='Cambiar el status de la pensión' subtitle='' />
+
+        <p>No hay registros de status de pensiones</p>
+
+        <ButtonBack />
+      </div>
+    )
+  }
 
   if (!pension || pension === undefined) {
     return (
@@ -31,7 +44,7 @@ const CompleteDataPage = async ({ params }: Props) => {
     <div className='flex flex-col w-full max-w-7xl mx-auto items-center gap-3 mb-20'>
       <Title title='Completar datos de la pensión' subtitle='Información adicional' className='text-xl w-full' />
 
-      <CompletePensionForm pension={pension} />
+      <CompletePensionForm pension={pension} status={statusPensions} />
 
     </div>
   )

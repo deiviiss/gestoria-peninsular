@@ -24,13 +24,12 @@ export default function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <Providers>
-        <body className={
-          // `${fontSans.className} bg-gradient-body`
-          cn(
-            'min-h-screen font-sans antialiased',
+        <body
+          className={cn(
+            'min-h-screen bg-background font-sans antialiased dark:bg-slate-900',
             fontSans.variable
-          )
-        }>
+          )}
+        >
           <ThemeProvider
             attribute='class'
             defaultTheme='light'

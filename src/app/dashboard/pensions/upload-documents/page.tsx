@@ -1,6 +1,6 @@
 import { type Metadata } from 'next'
 import { getPensions } from '@/actions'
-import { ButtonBack, CompletePensionForm } from '@/components'
+import { ButtonBack, Title } from '@/components'
 
 export const metadata: Metadata = {
   title: 'Cargar documentos',
@@ -25,9 +25,7 @@ const UploadDocumentsPage = async () => {
   }
   return (
     <div className='flex flex-col w-full max-w-7xl mx-auto items-center gap-3 mb-20'>
-      <h1 className='p-10 text-3xl'>Página para cargar documentos</h1>
-
-      <CompletePensionForm pension={pensions[0]} />
+      <Title title='Pagina para cargar documentos' subtitle='Formulario para cargar los documentos de los clientes' />
 
     </div>
   )

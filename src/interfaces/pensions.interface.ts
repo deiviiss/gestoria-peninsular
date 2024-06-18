@@ -28,6 +28,12 @@ export interface IPensionStatus {
   pensionsDetails: IPensionsDetails | null
 }
 
+export interface IStatusPension {
+  id: number
+  status: string
+  description?: string | null | undefined
+}
+
 export interface GetPensionsResponse {
   ok: boolean
   pensions?: Pension[]

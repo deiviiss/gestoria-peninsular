@@ -22,23 +22,12 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { type Pension } from '@/interfaces'
+import { type IStatusPension, type Pension } from '@/interfaces'
 
 interface Props {
   pension: Pension
+  status: IStatusPension[]
 }
-
-const status = [
-  {
-    id: 1,
-    name: 'En espera'
-  },
-  {
-    id: 2,
-    name: 'En el IMSS'
-  }
-
-]
 
 const pensionsDetailsSchema = z.object({
   porcentaje: z.number(),
@@ -57,7 +46,7 @@ const pensionsDetailsSchema = z.object({
   statusPensionId: z.string()
 })
 
-export const CompletePensionForm = ({ pension }: Props) => {
+export const CompletePensionForm = ({ pension, status }: Props) => {
   const router = useRouter()
 
   // 1. Define your form.
@@ -187,7 +176,7 @@ export const CompletePensionForm = ({ pension }: Props) => {
                   <SelectContent>
                     {
                       status.map((item) => (
-                        <SelectItem key={item.id} value={`${item.id}`}>{item.name}</SelectItem>
+                        <SelectItem key={item.id} value={`${item.id}`}>{item.status}</SelectItem>
                       ))
                     }
                   </SelectContent>
