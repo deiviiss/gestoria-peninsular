@@ -63,12 +63,10 @@ export const Sidebar = async () => {
                   <ul className="space-y-2 pb-2">
                     {linksCoordinator.map((link) => (
                       <li key={link.href}>
-                        <li key={link.href}>
-                          <SidebarItem
-                            url={link.href}
-                            name={link.name}
-                          />
-                        </li>
+                        <SidebarItem
+                          url={link.href}
+                          name={link.name}
+                        />
                       </li>
                     ))}
                   </ul>
