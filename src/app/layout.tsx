@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Providers } from '@/components'
 import './globals.css'
 import { ThemeProvider } from '@/components/providers/theme-provider'
+import { Toaster } from '@/components/ui/sonner'
 import { fontSans } from '@/config/fonts'
 import { cn } from '@/lib/utils'
 
@@ -38,6 +39,7 @@ export default function RootLayout({
           >
             {children}
           </ThemeProvider>
+          <Toaster richColors />
         </body>
       </Providers>
     </html>

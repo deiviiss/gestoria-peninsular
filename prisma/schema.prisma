@@ -133,6 +133,7 @@ model Customer {
   email               String           @default("sin-asignar@mail.com") @db.VarChar(255)
   rfc                 String           @default("sin - asignar") @db.VarChar(13)
   entidad             String           @default("sin - asignar") @db.VarChar(60)
+  state               String?          @default("Campeche")
   receiptIncomeId     Int?
   ReceiptIncome       ReceiptIncome?   @relation(fields: [receiptIncomeId], references: [id])
   afore               Afore            @relation(fields: [afore_id], references: [afore_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_clientes_afores")
@@ -142,6 +143,8 @@ model Customer {
   zona                Zona             @relation(fields: [zona_id], references: [zona_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_clientes_zonas")
   liquidacion         Liquidacion?
   pensionsDetails     PensionsDetails?
+  documents           Document[]
+  Activate            Activate?
 
   @@index([afore_id], map: "fk_clientes_afores_idx")
   @@index([asesor_id], map: "fk_clientes_asesores_idx")
@@ -409,6 +412,42 @@ model PensionsDetails {
   StatusPension   StatusPension @relation(fields: [statusPensionId], references: [id])
 
   @@map("pensiones_details")
+}
+
+model Document {
+  id            Int      @id @default(autoincrement())
+  name          String
+  url           String
+  typeProcedure String
+  customerId    Int
+  customer      Customer @relation(fields: [customerId], references: [cliente_id])
+
+  @@map("documents")
+}
+
+model Activate {
+  id           Int               @id @default(autoincrement())
+  incomeDate   DateTime
+  salary       Decimal
+  status       String
+  observations String?
+  nextPayment  DateTime?
+  downDate     DateTime?
+  customerId   Int               @unique
+  customer     Customer          @relation(fields: [customerId], references: [cliente_id], onDelete: Cascade)
+  payments     ActivatePayment[]
+
+  @@map("activates")
+}
+
+model ActivatePayment {
+  id            Int      @id @default(autoincrement())
+  paymentDate   DateTime
+  paymentAmount Decimal
+  activateId    Int
+  activate      Activate @relation(fields: [activateId], references: [id])
+
+  @@map("activate_payments")
 }
 
 model ReceiptIncome {

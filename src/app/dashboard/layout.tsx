@@ -2,8 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { getUserSessionServer } from '@/actions'
-import { FooterDashboard, ModeToggle, Sidebar } from '@/components'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { FooterDashboard, ModeToggle, ProfileMenu, Sidebar } from '@/components'
 
 export default async function DashboardLayout({
   children
@@ -12,12 +11,11 @@ export default async function DashboardLayout({
 }>) {
   const user = await getUserSessionServer()
 
-  if (user?.role !== 'admin') {
+  if (!user) {
     redirect('/')
   }
 
   return (
-
     <>
       {/* <TopMenu /> */}
       <nav className="bg-white border-b border-gray-200 fixed z-30 w-full dark:bg-slate-900 dark:border-slate-700">
@@ -57,27 +55,18 @@ export default async function DashboardLayout({
                   ></path>
                 </svg>
               </button>
+
+              {/* Logo */}
               <Link
                 href={'/dashboard'}
-                className="text-xl font-bold flex items-center lg:ml-2.5"
+                className="h-10 overflow-hidden cursor-pointer flex items-center justify-center w-40"
               >
-                {/* Logo */}
-                <div className='w-20'>
-                  <Link href={'/'}>
-                    <Image src={'/LogoGP.png'} width={190} height={70} alt='logoGP' className='w-full h-auto' />
-                  </Link>
-                </div>
-
+                <Image src={'/LogoGP.png'} width={190} height={70} alt='logoGP' className='w-auto h-full' />
               </Link>
             </div>
             <div className="flex items-center gap-4">
               <ModeToggle />
-
-              {/* User Avatar */}
-              <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
+              <ProfileMenu />
             </div>
           </div>
         </div>
@@ -89,11 +78,9 @@ export default async function DashboardLayout({
           id="main-content"
           className="h-full w-full bg-gray-50 relative overflow-y-auto lg:ml-48 dark:bg-black">
           <main>
-            <div className="pt-6 px-4">
+            <div className="py-6 px-4 ">
               <div className="w-full min-h-[calc(100vh-170px)]">
-                <div className="bg-white shadow rounded-lg p-4 sm:p-6 xl:p-8 dark:bg-slate-900">
-                  {/* {children} */}
-                </div>
+                {children}
               </div>
             </div>
           </main>

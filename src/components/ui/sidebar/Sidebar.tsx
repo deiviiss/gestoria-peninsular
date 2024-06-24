@@ -1,13 +1,14 @@
-'use client'
+// 'use client'
 
 // import clsx from 'clsx'
-import Link from 'next/link'
+import { SidebarItem } from './SidebarItem'
+import { getUserSessionServer } from '@/actions'
 // import { useSession } from 'next-auth/react'
 // import { IoCloseOutline, IoLogInOutline, IoLogOutOutline, IoPeopleOutline, IoPersonOutline, IoSearchOutline } from 'react-icons/io5'
 // import { logout } from '@/actions'
 // import { useUiStore } from '@/store'
 
-export const Sidebar = () => {
+export const Sidebar = async () => {
   // const isSideMenuOpen = useUiStore((state) => state.isSideMenuOpen)
   // const closeMenu = useUiStore((state) => state.closeSideMenu)
 
@@ -15,11 +16,20 @@ export const Sidebar = () => {
   // const isAuthenticated = !!session?.user
   // const isAdmin = session?.user?.role === 'admin'
 
-  const links = [
+  const user = await getUserSessionServer()
+  const isAdmin = user?.role === 'admin'
+  const isCoordinator = user?.role === 'coordinator'
+
+  const linksAdmin = [
     { name: 'Outsourcing', href: '/dashboard/outsourcing' },
     { name: 'Pensiones', href: '/dashboard/pensions' },
     { name: 'Usuarios', href: '/dashboard/users' },
-    { name: 'Impuestos', href: '/dashboard/taxes' }
+    { name: 'Impuestos', href: '/dashboard/taxes' },
+    { name: 'Activate', href: '/dashboard/activate' }
+  ].sort((a, b) => a.name.localeCompare(b.name))
+
+  const linksCoordinator = [
+    { name: 'Activate', href: '/dashboard/activate' }
   ].sort((a, b) => a.name.localeCompare(b.name))
 
   return (
@@ -30,20 +40,39 @@ export const Sidebar = () => {
         aria-label="Sidebar"
       >
         <div className="relative flex-1 flex flex-col min-h-0 border-r border-gray-200 bg-white pt-0 dark:bg-slate-900 dark:border-slate-900">
-          <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
+          <div className="flex-1 flex flex-col pt-6 mt-2 pb-4 overflow-y-auto">
             <div className="flex-1 px-3 bg-white divide-y space-y-1 dark:bg-slate-900">
-              <ul className="space-y-2 pb-2">
-                {links.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-base capitalize text-gray-900 font-normal rounded-lg flex items-center p-2 hover:bg-gray-100 group dark:bg-slate-900 dark:hover:bg-slate-800 dark:text-slate-300"
-                    >
-                      <span className="ml-3">{link.name}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              {/* links */}
+              {
+                isAdmin && (
+                  <ul className="space-y-2 pb-2">
+                    {linksAdmin.map((link) => (
+                      <li key={link.href}>
+                        <SidebarItem
+                          url={link.href}
+                          name={link.name}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                )
+              }
+              {
+                isCoordinator && (
+                  <ul className="space-y-2 pb-2">
+                    {linksCoordinator.map((link) => (
+                      <li key={link.href}>
+                        <li key={link.href}>
+                          <SidebarItem
+                            url={link.href}
+                            name={link.name}
+                          />
+                        </li>
+                      </li>
+                    ))}
+                  </ul>
+                )
+              }
             </div>
           </div>
         </div>

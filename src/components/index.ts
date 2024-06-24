@@ -1,11 +1,13 @@
 // UI
-export * from './ui/sidebar/Sidebar'
+export { Sidebar } from './ui/sidebar/Sidebar'
+export { SidebarItem } from './ui/sidebar/SidebarItem'
 export * from './ui/title/Title'
 export * from './ui/top-menu/TopMenu'
 export * from './ui/header-title/HeaderTitle'
 export { ButtonBack } from './ui/button-back/ButtonBack'
 export * from './ui/pagination/Pagination'
 export { Providers } from './providers/Providers'
+export { ProfileMenu } from './ui/profile/ProfileMenu'
 
 // ui chadcn
 export { ModeToggle } from './ui/theme-toggle-button'
@@ -31,3 +33,10 @@ export { FormUpdatePensionCustomer } from './pensions/form/FormPension'
 export { PopoverPension } from './pensions/popover/Popover'
 export { CompletePensionForm } from './pensions/form/completePensionForm'
 export { ChangeStatusForm } from './pensions/form/changeStatusForm'
+
+// activate
+export { TableActivate } from './activate/data-table/TableActivate'
+export { DialogFormChangeStatus } from './activate/dialog-form-change-status/DialogFormChangeStatus'
+export { FormChangeStatusIncome } from './activate/form-change-status/FormChangeStatusIncome'
+export { FormChangeStatusDown } from './activate/form-change-status/FormChangeStatusDown'
+export { FormAddPayment } from './activate/form-add-payment/FormAddPayment'
