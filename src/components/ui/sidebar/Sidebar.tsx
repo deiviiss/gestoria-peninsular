@@ -29,6 +29,7 @@ export const Sidebar = async () => {
   ].sort((a, b) => a.name.localeCompare(b.name))
 
   const linksCoordinator = [
+    { name: 'Impuestos', href: '/dashboard/taxes' },
     { name: 'Activate', href: '/dashboard/activate' }
   ].sort((a, b) => a.name.localeCompare(b.name))
 
