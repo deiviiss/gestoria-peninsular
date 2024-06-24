@@ -161,7 +161,7 @@ export const columns: Array<ColumnDef<CustomerActivate>> = [
       const date = new Date(incomeDate)
 
       // utc date is one day behind
-      // date.setDate(date.getDate() + 1)
+      date.setDate(date.getDate() + 1)
 
       return (
         <div className="text-center">
@@ -194,7 +194,7 @@ export const columns: Array<ColumnDef<CustomerActivate>> = [
       const date = new Date(downDate)
 
       // utc date is one day behind
-      // date.setDate(date.getDate() + 1)
+      date.setDate(date.getDate() + 1)
 
       return (
         <div className="text-center">
@@ -227,7 +227,7 @@ export const columns: Array<ColumnDef<CustomerActivate>> = [
       const date = new Date(nextPayment)
 
       // utc date is one day behind
-      // date.setDate(date.getDate() + 1)
+      date.setDate(date.getDate() + 1)
 
       return (
         <div className="text-center">
